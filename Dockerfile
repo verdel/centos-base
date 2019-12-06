@@ -3,19 +3,20 @@ MAINTAINER Vadim Aleksandrov <valeksandrov@me.com>
 
 COPY rootfs /
 
-RUN yum update -y && \
-    yum install -y epel-release && \
-    yum install -y python-pip git which python3 && \
-    pip install --upgrade pip && \
+RUN dnf update -y && \
+    dnf install -y epel-release && \
+    dnf install -y python36 git which && \
     pip3 install --upgrade pip && \
-    pip install git+https://github.com/verdel/j2cli.git && \
+    echo "export PATH=~/.local/bin:$PATH" >> ~/.bashrc && \
+    source ~/.bashrc && \
+    pip3 install git+https://github.com/verdel/j2cli.git && \
     update-ca-trust && \
     # Clean up
-    yum clean all && \
+    dnf clean all && \
     rm -rf \
     /usr/share/man \
     /tmp/* \
-    /var/cache/yum
+    /var/cache/dnf
 
 # Add s6-overlay
 ENV S6_OVERLAY_VERSION v1.22.1.0

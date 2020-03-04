@@ -5,14 +5,15 @@ COPY rootfs /
 
 RUN dnf update -y && \
     dnf install -y epel-release && \
-    dnf install -y python36 git which && \
+    dnf install -y python3 git which && \
     pip3 install --upgrade pip && \
     echo "export PATH=~/.local/bin:$PATH" >> ~/.bashrc && \
     source ~/.bashrc && \
-    pip3 install git+https://github.com/verdel/j2cli.git && \
+    pip3 install j2cli && \
+    alternatives --set python /usr/bin/python3 && \
     update-ca-trust && \
     # Clean up
-    dnf clean all && \
+    dnf -y clean all && \
     rm -rf \
     /usr/share/man \
     /tmp/* \
